@@ -1,3 +1,4 @@
+import Teacher from '#models/teacher'
 import type { HttpContext } from '@adonisjs/core/http'
 export default class TeachersController {
   /**
