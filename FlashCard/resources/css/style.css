@@ -1,0 +1,37 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* ═════ header ═════ */
+
+header {
+  background-color: lightgray;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav {
+  width: 20%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-right: 40px;
+}
+
+.logo_image {
+  width: 70px;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
