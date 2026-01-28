@@ -174,3 +174,7 @@ label {
   height: 100%;
   margin-left: 1vw;
 }
+
+nav > a {
+  margin-left: 20px;
+}

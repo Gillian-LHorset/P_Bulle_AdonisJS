@@ -1,82 +1,60 @@
-<!DOCTYPE html>
-<html lang="fr">
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    @vite(['resources/css/style.css', 'resources/js/app.js'])
-    <title>
-      Version statique de l'application des surnoms
-    </title>
-  </head>
+@component('components/layout', { title: 'Accueil' })
 
-  <body>
+  <h3>
+    Liste des enseignants
+  </h3>
+  <form action="#" method="post">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Nom
+          </th>
+          <th>
+            Surnom
+          </th>
+          <th>
+            Options
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @each ((teacher, index) in teachers)
+          <tr>
+            <td>
+              {{ teacher.lastname }} {{ teacher.firstname }}
+            </td>
+            <td>
+              {{ teacher.nickname }}
+            </td>
+            <td class="containerOptions">
+              <a href="{{ route('teacher.edit', {id: teacher.id}) }}">
+                <img height="20em" src="/img/edit.png" alt="edit" />
+              </a>
 
-    <div class="container">
-      @component('components/layout', { title: 'Accueil' })
-        <h3>
-          Liste des enseignants
-        </h3>
-        <form action="#" method="post">
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  Nom
-                </th>
-                <th>
-                  Surnom
-                </th>
-                <th>
-                  Options
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              @each ((teacher, index) in teachers)
-                <tr>
-                  <td>
-                    {{ teacher.lastname }} {{ teacher.firstname }}
-                  </td>
-                  <td>
-                    {{ teacher.nickname }}
-                  </td>
-                  <td class="containerOptions">
-                    <a href="{{ route('teacher.edit', {id: teacher.id}) }}">
-                      <img height="20em" src="/img/edit.png" alt="edit" />
-                    </a>
-
-                    <form
-                      action="{{ route('teacher.destroy', { id: teacher.id }) }}?_method=DELETE"
-                      method="POST"
-                      style="display: inline"
-                    >
-                      {{ csrfField() }}
+              <form
+                action="{{ route('teacher.destroy', { id: teacher.id }) }}?_method=DELETE"
+                method="POST"
+                style="display: inline"
+              >
+                {{ csrfField() }}
                         <button
-                        type="submit"
-                        style="background: none; border: none;
+                  type="submit"
+                  style="background: none; border: none;
                         padding: 0; cursor: pointer;"
-                      >
-                        <img height="20em" src="/img/delete.png" alt="delete" />
-                      </button>
-                    </form>
+                >
+                  <img height="20em" src="/img/delete.png" alt="delete" />
+                </button>
+              </form>
 
-                    <a href="{{ route('teacher.show', {id: teacher.id}) }}">
-                      <img height="20em" src="/img/detail.png" alt="detail" />
-                    </a>
-                  </td>
-                </tr>
-              @end
-            </tbody>
-          </table>
-        </form>
-      @endcomponent
-      <script src="js/script.js">
-
-      </script>
-    </div>
-
-  </body>
-
-</html>
+              <a href="{{ route('teacher.show', {id: teacher.id}) }}">
+                <img height="20em" src="/img/detail.png" alt="detail" />
+              </a>
+            </td>
+          </tr>
+        @end
+      </tbody>
+    </table>
+  </form>
+@endcomponent
