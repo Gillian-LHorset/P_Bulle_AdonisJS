@@ -5,7 +5,7 @@ export default class CardsController {
    * Display a list of resource
    */
   async index({}: HttpContext) {}
-
+ 
   /**
    * Display form to create a new record
    */
