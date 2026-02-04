@@ -2,4 +2,18 @@
   <h1>
     Mes decks
   </h1>
+  <ul class="decks_list">
+    @each(deck in decks)
+      <li class="decks_clickable">
+        <a class="link_decks" href="{{ route('decks.show', {id: deck.deckId}) }}">
+          <h2 class="decks_title">
+            {{ deck.title }}
+          </h2>
+          <p class="decks_description">
+            {{ deck.description }}
+          </p>
+        </a>
+      </li>
+    @end
+  </ul>
 @endcomponent

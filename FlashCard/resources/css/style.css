@@ -34,4 +34,39 @@ nav {
 
 h1 {
   text-align: center;
+  padding: 100px;
+}
+
+.decks_list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  gap: 50px;
+}
+
+.decks_clickable {
+  transition: 1.4s;
+  width: 25%;
+  height: 220px;
+  background-color: rgb(235, 235, 235);
+  border-radius: 20px;
+}
+
+.link_decks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  color: black;
+  color: inherit;
+  text-decoration: none;
+}
+
+.decks_clickable:hover {
+  scale: 1.1;
+  transition: 1.1s;
 }
