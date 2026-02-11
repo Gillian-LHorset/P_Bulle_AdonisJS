@@ -1,0 +1,34 @@
+@component('./components/layout', { title: "FlashCard - Connexion" })
+
+  <h1>
+    Connexion
+  </h1>
+  <form action="{{ route('auth.login-post') }}" method="post">
+    {{ csrfField() }}
+    <input
+      type="text"
+      id="username"
+      name="username"
+      value="{{ old('username') || '' }}"
+      placeholder="Nom d'utilisateur"
+    />
+    @inputError('username')
+      <p>
+        {{ $messages.join(', ') }}
+      </p>
+    @end
+    <input
+      type="password"
+      id="password"
+      name="password"
+      value="{{ old('password') || '' }}"
+      placeholder="Mot de passe"
+    />
+    @inputError('password')
+      <p>
+        {{ $messages.join(', ') }}
+      </p>
+    @end
+    <button type="submit">Se connecter</button>
+  </form>
+@endcomponent

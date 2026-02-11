@@ -1,0 +1,19 @@
+@error('E_INVALID_CREDENTIALS')
+  <div class="alert alert-danger">
+    {{ $message }}
+  </div>
+@end
+
+{
+"shared": {
+        "fields": {
+            "username": "Nom d'utilisateur",
+            "password": "Mot de passe"
+        },
+        "messages": {
+            "required": "Le champ {field} est obligatoire.",
+            "minLength": "Le champ {field} doit contenir au moins { min } caractères.",
+            "email": "Le champ doit {field} être une adresse e-mail valide."
+        }
+    }
+}

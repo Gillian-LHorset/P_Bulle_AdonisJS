@@ -46,7 +46,7 @@ h1 {
 }
 
 .decks_clickable {
-  transition: 1.4s;
+  transition: 0.3s;
   width: 25%;
   height: 220px;
   background-color: rgb(235, 235, 235);
@@ -67,6 +67,6 @@ h1 {
 }
 
 .decks_clickable:hover {
-  scale: 1.1;
-  transition: 1.1s;
+  scale: 1.05;
+  transition: 0.3s;
 }

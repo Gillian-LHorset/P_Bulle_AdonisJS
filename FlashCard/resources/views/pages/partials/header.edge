@@ -1,8 +1,19 @@
+@eval(await auth.check())
 <header>
-  <img src="/public/img/placeholder.jpg" alt="placholder" class="logo_image" />
+  <a href="/">
+    <img src="/public/img/placeholder.jpg" alt="placholder" class="logo_image" />
+  </a>
   <nav>
-    <a href="/">lien1</a>
-    <a href="/">lien2</a>
-    <a href="/">lien3</a>
+    <a href="{{ route('decks.create') }}">Ajouter un deck</a>
+    <a href="/">S'inscrire</a>
+    @if(auth.isAuthenticated)
+      Connecter en tant que {{ auth.user.username }}
+      <form action="{{ route('auth.logout') }}" method="post">
+        {{ csrfField() }}
+        <button type="submit">Se déconnecter</button>
+      </form>
+    @else
+      <a href="{{ route('auth.login') }}">Se connecter</a>
+    @end
   </nav>
 </header>
