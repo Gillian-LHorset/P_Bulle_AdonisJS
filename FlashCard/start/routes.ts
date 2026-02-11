@@ -24,3 +24,7 @@ router.get('/login', [AuthController, 'login_index']).as('auth.login')
 router.post('/login', [AuthController, 'login']).as('auth.login-post')
 
 router.post('/logout', [AuthController, 'logout']).as('auth.logout')
+
+router.get('/register', [AuthController, 'register_index']).as('auth.register')
+
+router.post('/register', [AuthController, 'register']).as('auth.register-post')

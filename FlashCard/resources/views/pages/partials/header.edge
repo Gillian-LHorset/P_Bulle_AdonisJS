@@ -5,7 +5,7 @@
   </a>
   <nav>
     <a href="{{ route('decks.create') }}">Ajouter un deck</a>
-    <a href="/">S'inscrire</a>
+    <a href="{{ route('auth.register') }}">S'inscrire</a>
     @if(auth.isAuthenticated)
       Connecter en tant que {{ auth.user.username }}
       <form action="{{ route('auth.logout') }}" method="post">

@@ -31,5 +31,7 @@ export default class AuthController {
     return response.redirect().toRoute('home')
   }
 
-  async register({ request, response }: HttpContext) {}
+  async register({ request, response }: HttpContext) {
+    return request.all()
+  }
 }

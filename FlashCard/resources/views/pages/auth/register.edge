@@ -3,4 +3,32 @@
   <h1>
     register
   </h1>
+  <form action="" method="post">
+    {{ csrfField() }}
+    <input
+      type="text"
+      id="username"
+      name="username"
+      value="{{ old('username') || '' }}"
+      placeholder="Nom d'utilisateur"
+    />
+    @inputError('username')
+      <p>
+        {{ $messages.join(', ') }}
+      </p>
+    @end
+    <input
+      type="password"
+      id="password"
+      name="password"
+      value="{{ old('password') || '' }}"
+      placeholder="Mot de passe"
+    />
+    @inputError('password')
+      <p>
+        {{ $messages.join(', ') }}
+      </p>
+    @end
+    <button type="submit">S'inscrire</button>
+  </form>
 @endcomponent
