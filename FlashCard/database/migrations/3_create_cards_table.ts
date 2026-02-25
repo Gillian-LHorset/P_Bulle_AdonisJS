@@ -5,14 +5,14 @@ export default class extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('card_id')
+      table.increments('id')
 
       table.string('recto_text').notNullable()
       table.string('verso_text').notNullable()
 
       table.integer('deck_id')
         .unsigned()
-        .references('deck_id')
+        .references('id')
         .inTable('decks')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')

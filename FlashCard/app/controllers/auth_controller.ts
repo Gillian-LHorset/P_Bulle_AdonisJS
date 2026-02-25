@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { loginUserValidator } from '#validators/auth'
+import { loginUserValidator, registerUserValidator } from '#validators/auth'
 import User from '#models/user'
+import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class AuthController {
   async login_index({ view }: HttpContext) {
@@ -31,7 +32,14 @@ export default class AuthController {
     return response.redirect().toRoute('home')
   }
 
-  async register({ request, response }: HttpContext) {
-    return request.all()
+  async register({ request, auth, session, response }: HttpContext) {
+    const {username, password} = await request.validateUsing(registerUserValidator)
+
+    const user = await User.create({username, password})
+
+    await auth.use('web').login(user)
+
+    session.flash("success", "Register complet")
+    return response.redirect().toRoute('home')
   }
 }

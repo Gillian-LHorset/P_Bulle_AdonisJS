@@ -5,7 +5,7 @@ import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 
 export default class Card extends BaseModel {
   @column({ isPrimary: true })
-  declare cardId: number
+  declare id: number
 
   @column()
   declare rectoText: string

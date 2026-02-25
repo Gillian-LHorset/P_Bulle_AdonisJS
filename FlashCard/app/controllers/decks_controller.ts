@@ -1,14 +1,24 @@
 import Deck from '#models/deck'
 import type { HttpContext } from '@adonisjs/core/http'
+import { dd } from '@adonisjs/core/services/dumper';
 
 export default class DecksController {
   /**
    * Display a list of resource
    */
-  async index({ view }: HttpContext) {
-    const decks = await Deck.query().orderBy('createdAt')
+  async index({ view, auth }: HttpContext) {
 
-    return view.render('pages/home', { decks })
+    
+    return view.render('pages/home')
+  }
+
+  async showmydecks({ view, auth }: HttpContext) {
+    const decks = await Deck.query()
+    .from('decks')
+    .where('user_id', auth.user.id)
+    .orderBy('created_at', 'desc');
+
+    return view.render('pages/decks/mydecks', { decks })
   }
 
   /**

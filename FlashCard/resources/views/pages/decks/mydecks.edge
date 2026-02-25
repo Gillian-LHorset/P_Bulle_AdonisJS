@@ -1,0 +1,28 @@
+@component('./components/layout', { title: "FlashCard - Accueil" })
+  <h1>
+    Mes decks
+  </h1>
+    @if(decks.length > 0)
+    <ul class="decks_list">
+      @each(deck in decks)
+            <li class="decks_clickable">
+              <a class="link_decks" href="{{ route('decks.show', { id: deck.id }) }}">
+                <h2 class="decks_title">
+                  {{ deck.title }}
+                </h2>
+
+                <p class="decks_description">
+                  {{ deck.description }}
+                </p>
+
+                <p>
+                </p>
+              </a>
+            </li>
+          @end
+        </ul>
+      @else
+        <h2>Vous n'avez pas de decks !</h2>
+      @end
+
+@endcomponent
