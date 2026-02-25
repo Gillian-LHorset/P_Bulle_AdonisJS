@@ -1,3 +1,4 @@
+import Card from '#models/card';
 import Deck from '#models/deck'
 import type { HttpContext } from '@adonisjs/core/http'
 import { dd } from '@adonisjs/core/services/dumper';
@@ -6,7 +7,7 @@ export default class DecksController {
   /**
    * Display a list of resource
    */
-  async index({ view, auth }: HttpContext) {
+  async index({ view }: HttpContext) {
 
     
     return view.render('pages/home')
@@ -31,15 +32,25 @@ export default class DecksController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {}
+  async store({ request }: HttpContext) {
+    const {title, description} = await request.validateUsing() //TODO : store les données dans la db
+  }
+
 
   /**
    * Show individual record
    */
   async show({ params, view }: HttpContext) {
-    const deck = await Deck.query().where('deck_id', params.id).firstOrFail()
+    const deck = await Deck.query()
+    .where('id', params.id)
+    .firstOrFail()
+    
+    const cards = await Card.query()
+    .where('deck_id', params.id)
+    .orderBy('created_at', 'desc');
 
-    return view.render('pages/decks/show', { title: 'test', deck })
+
+    return view.render('pages/decks/show', { title: "FlashCard - " + deck.title, deck, cards })
   }
 
   /**

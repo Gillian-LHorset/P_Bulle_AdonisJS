@@ -7,5 +7,14 @@
   <p>
     {{ deck.description }}
   </p>
+  @each(card in cards)
 
+    <p>
+      {{ card.rectoText }}
+    </p>
+    <p>
+      {{ card.versoText }}
+    </p>
+
+  @end
 @endcomponent

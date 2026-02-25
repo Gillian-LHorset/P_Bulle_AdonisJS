@@ -15,17 +15,24 @@ import { middleware } from './kernel.js'
 
 router.get('/', [DecksController, 'index']).as('home').use(middleware.guest())
 
+
 router.get('/mydecks', [DecksController, 'showmydecks']).as('my-decks').use(middleware.auth())
 
 router.get('/decks/show/:id', [DecksController, 'show']).as('decks.show').use(middleware.auth())
 
+
 router.get('/decks/add', [DecksController, 'create']).as('decks.create').use(middleware.auth())
+
+router.post('/decks/add', [DecksController, 'store']).as('decks.store').use(middleware.auth())
+
 
 router.get('/login', [AuthController, 'login_index']).as('auth.login').use(middleware.guest())
 
 router.post('/login', [AuthController, 'login']).as('auth.login-post').use(middleware.guest())
 
+
 router.post('/logout', [AuthController, 'logout']).as('auth.logout').use(middleware.auth())
+
 
 router.get('/register', [AuthController, 'register_index']).as('auth.register').use(middleware.guest())
 
