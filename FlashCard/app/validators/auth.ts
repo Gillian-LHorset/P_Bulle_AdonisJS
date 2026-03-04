@@ -9,10 +9,14 @@ const loginUserValidator = vine.compile(
 
 const registerUserValidator = vine.compile(
   vine.object({
-    username: vine.string().minLength(4).alphaNumeric().unique(async (db, value) => {
-      const users = await db.from('users').where('username', value).first()
-      return !users
-    }), // TODO : verifier que le champs est unique dans la db
+    username: vine
+      .string()
+      .minLength(4)
+      .alphaNumeric()
+      .unique(async (db, value) => {
+        const users = await db.from('users').where('username', value).first()
+        return !users
+      }),
     password: vine.string().minLength(2),
   })
 )

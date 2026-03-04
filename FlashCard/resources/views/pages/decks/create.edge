@@ -3,14 +3,15 @@
   <h1>
     hello
   </h1>
-<form action="{{ route('decks.store') }}" method="POST">
+  <a href="#" onclick="window.history.back()">Annuler</a>
+  <form action="{{ route('decks.store') }}" method="POST">
     {{ csrfField() }}
 
     <label>Titre</label>
-    <input type="text" id="title" required>
+    <input type="text" name="title" required />
 
     <label>Description</label>
-    <input type="text" id="description" required>
+    <input type="text" name="description" required />
 
     <button type="submit">Submit</button>
   </form>

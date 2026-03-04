@@ -1,5 +1,4 @@
 @component('./components/layout', { title: title })
-
   <h1>
     {{ deck.title }}
   </h1>
@@ -8,7 +7,6 @@
     {{ deck.description }}
   </p>
   @each(card in cards)
-
     <p>
       {{ card.rectoText }}
     </p>
@@ -16,5 +14,38 @@
       {{ card.versoText }}
     </p>
 
+    <button onclick="toggleDeleteConfirmation({{ card.id }})">
+      supprimer
+    </button>
+    <div id="confimation-div-{{ card.id }}" class="hidden">
+      <p>
+        Êtes-vous sûrs de vouloir supprimer cette carte ?
+      </p>
+      <form action="{{ route('cards.destroy', { id: card.id }) }}?_method=DELETE" method="POST">
+        {{ csrfField() }}
+      <button type="submit">Oui</button>
+      </form>
+      <button onclick="toggleDeleteConfirmation({{ card.id }})">Non</button>
+    </div>
   @end
+  
+  
+  
+  <a href="{{ route('cards.create') }}">Ajouter une carte</a>
+
+  <script>
+    document.querySelector("#delete-button").addEventListener("click", toggleDeleteConfirmation);
+
+    let isShow = false;
+
+    function toggleDeleteConfirmation(id) {
+      const div = document.getElementById("confimation-div-" + id);
+      div.classList.toggle("hidden");
+    }
+
+    function cancelDelete() {
+      const div = document.getElementById("confimation-div-" + id);
+      div.classList.add("hidden");
+    }
+  </script>
 @endcomponent

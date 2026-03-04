@@ -1,0 +1,18 @@
+@component('./components/layout', { title: title })
+
+  <h1>
+    hello
+  </h1>
+  <a href="#" onclick="window.history.back()">Annuler</a>
+  <form action="{{ route('cards.store') }}" method="POST">
+    {{ csrfField() }}
+
+    <label>Question de la carte</label>
+    <input type="text" name="rectoText" required />
+
+    <label>Réponse</label>
+    <input type="text" name="versoText" required />
+
+    <button type="submit">Submit</button>
+  </form>
+@endcomponent
