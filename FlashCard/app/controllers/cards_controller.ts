@@ -9,9 +9,9 @@ export default class CardsController {
    * Display a list of resource
    */
   async index({ view }: HttpContext) {
-    const decks = await Card.query().orderBy('createdAt', 'desc')
+    const cards = await Card.query().orderBy('createdAt', 'desc')
 
-    return view.render('pages/home', { decks })
+    return view.render('pages/home', { cards })
   }
 
   /**

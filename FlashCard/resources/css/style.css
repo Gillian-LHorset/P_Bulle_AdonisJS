@@ -42,8 +42,8 @@ h1 {
 }
 
 .decks_list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
   list-style: none;
   gap: 50px;
@@ -77,4 +77,12 @@ h1 {
 
 .hidden {
   display: none;
+}
+
+/* page catégories */
+
+.categories_name {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

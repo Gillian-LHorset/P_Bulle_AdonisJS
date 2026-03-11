@@ -1,0 +1,16 @@
+@component('./components/layout', { title: title })
+
+  <form action="{{ route('categorie.store') }}" method="POST">
+    {{ csrfField() }}
+
+    <label>Nome de la catégorie</label>
+    <input type="text" name="name" required />
+    @inputError('name')
+      <p class="text-danger">
+        {{ $messages.join(', ') }}
+      </p>
+    @end
+    <button type="submit">Submit</button>
+  </form>
+
+@endcomponent

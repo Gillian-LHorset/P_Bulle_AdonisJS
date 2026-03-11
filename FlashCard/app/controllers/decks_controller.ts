@@ -1,4 +1,5 @@
 import Card from '#models/card'
+import Categorie from '#models/categorie'
 import Deck from '#models/deck'
 import User from '#models/user'
 import { registerDeckValidator } from '#validators/deck'
@@ -17,6 +18,7 @@ export default class DecksController {
     const decks = await Deck.query()
       .from('decks')
       .where('user_id', auth.user!.id)
+      .preload('catego')
       .orderBy('created_at', 'desc')
 
     return view.render('pages/decks/mydecks', { decks })
@@ -53,10 +55,22 @@ export default class DecksController {
     return view.render('pages/decks/show', { title: 'FlashCard - ' + deck.title, deck, cards })
   }
 
+  async editView({ params, view }: HttpContext) {
+    const deck = await Deck.query().where('id', params.id).preload('catego').firstOrFail()
+
+    const categories = await Categorie.query()
+
+    return view.render('pages/decks/edit', { title: 'FlashCard - ', deck, categories })
+  }
+
   /**
    * Edit individual record
    */
-  async edit({ params }: HttpContext) {}
+  async edit({ params, request }: HttpContext) {
+    const data = request.all()
+
+    return { post: { id: params.id, ...data } }
+  }
 
   /**
    * Handle form submission for the edit action

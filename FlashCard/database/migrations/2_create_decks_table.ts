@@ -10,10 +10,19 @@ export default class extends BaseSchema {
       table.string('title').notNullable
       table.string('description').notNullable
 
-      table.integer('user_id')
+      table
+        .integer('user_id')
         .unsigned()
         .references('id')
         .inTable('users')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+
+      table
+        .integer('categorie_id')
+        .unsigned()
+        .references('id')
+        .inTable('categories')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
 

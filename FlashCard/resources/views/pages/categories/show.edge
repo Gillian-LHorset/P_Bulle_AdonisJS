@@ -1,0 +1,23 @@
+@component('./components/layout', { title: title })
+
+  <a href="{{ route('categorie.create') }}">Nouvelle catégorie</a>
+  <br />
+  <br />
+  <br />
+
+  @each(categorie in categories)
+    <div class="categories_name">
+      <p>
+        {{ categorie.name }}
+      </p>
+      <div>
+        <form action="{{ route('categorie.destroy', { id: categorie.id }) }}?_method=DELETE" method="POST">
+          {{ csrfField() }}
+            <button type="submit">supprimer</button>
+        </form>
+        <a href="">modifier</a>
+      </div>
+    </div>
+    <br />
+  @end
+@endcomponent
