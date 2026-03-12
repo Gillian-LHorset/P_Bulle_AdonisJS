@@ -16,6 +16,8 @@ import CategoriesController from '#controllers/categories_controller'
 
 router.get('/', [DecksController, 'index']).as('home').use(middleware.guest())
 
+// about decks
+
 // show the list of decks
 router.get('/mydecks', [DecksController, 'showmydecks']).as('my-decks').use(middleware.auth())
 
@@ -23,26 +25,48 @@ router.get('/mydecks', [DecksController, 'showmydecks']).as('my-decks').use(midd
 router.get('/decks/show/:id', [DecksController, 'show']).as('decks.show').use(middleware.auth())
 
 // modify a deck
-router.get('/decks/edit/:id', [DecksController, 'editView']).as('decks.editView')
+router.get('/decks/edit/:id', [DecksController, 'edit']).as('decks.edit').use(middleware.auth())
 
-// modify a deck
-router.any('/decks/edits/:id', [DecksController, 'edit']).as('decks.edit') // le patch ne fonctionne pas mais post arrive à acceder au controller
+// update a deck
+router
+  .any('/decks/update/:id', [DecksController, 'update'])
+  .as('decks.update')
+  .use(middleware.auth()) // le patch ne fonctionne pas mais post arrive à acceder au controller
 
 // add a deck
 router.get('/decks/add', [DecksController, 'create']).as('decks.create').use(middleware.auth())
 
 router.post('/decks/add', [DecksController, 'store']).as('decks.store').use(middleware.auth())
 
+// delete a cards
+router
+  .any('/decks/destroy/:id', [DecksController, 'destroy']) // seul le type any marche
+  .use(middleware.auth())
+  .as('decks.destroy')
+
+// about card
+
 // add a card
 router.get('/cards/add', [CardsController, 'create']).as('cards.create').use(middleware.auth())
 
 router.post('/cards/add', [CardsController, 'store']).as('cards.store').use(middleware.auth())
 
-// delete a card
+// delete a cards
 router
-  .delete('/cards/destroy/:id', [CardsController, 'destroy'])
-  .as('cards.destroy')
+  .any('/cards/destroy/:id', [CardsController, 'destroy']) // seul le type any marche
   .use(middleware.auth())
+  .as('cards.destroy')
+
+// edit view
+router.get('/cards/edit/:id', [CardsController, 'edit']).as('cards.edit').use(middleware.auth())
+
+//update a card
+router
+  .any('/cards/update/:id', [CardsController, 'update']) // .patch ne fonctionne pas mais .any marche
+  .as('cards.update')
+  .use(middleware.auth())
+
+// about categories
 
 // categories
 router.get('/categorie', [CategoriesController, 'show']).as('categorie.show')
@@ -54,7 +78,8 @@ router.get('/catergorie/create', [CategoriesController, 'create']).as('categorie
 
 router.post('/catergorie/create', [CategoriesController, 'store']).as('categorie.store')
 
-// auth
+// about auth
+
 router.get('/login', [AuthController, 'login_index']).as('auth.login').use(middleware.guest())
 
 router.post('/login', [AuthController, 'login']).as('auth.login-post').use(middleware.guest())

@@ -55,7 +55,7 @@ export default class DecksController {
     return view.render('pages/decks/show', { title: 'FlashCard - ' + deck.title, deck, cards })
   }
 
-  async editView({ params, view }: HttpContext) {
+  async edit({ params, view }: HttpContext) {
     const deck = await Deck.query().where('id', params.id).preload('catego').firstOrFail()
 
     const categories = await Categorie.query()
@@ -66,10 +66,15 @@ export default class DecksController {
   /**
    * Edit individual record
    */
-  async edit({ params, request }: HttpContext) {
-    const data = request.all()
+  async update({ params, request, response }: HttpContext) {
+    const deckFromForm = await request.validateUsing(registerDeckValidator)
 
-    return { post: { id: params.id, ...data } }
+    const deck = await Deck.query().where('id', params.id).firstOrFail()
+
+    deck.merge(deckFromForm)
+    await deck.save()
+
+    return response.redirect().toRoute('home')
   }
 
   /**
@@ -80,5 +85,13 @@ export default class DecksController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params, session, response }: HttpContext) {
+    const deck = await Deck.findOrFail(params.id)
+
+    await deck.delete()
+
+    session.flash('success', `La carte a été supprimée avec succès !`)
+
+    return response.redirect().toRoute('home')
+  }
 }

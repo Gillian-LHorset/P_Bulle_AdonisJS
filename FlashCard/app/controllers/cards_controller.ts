@@ -42,12 +42,25 @@ export default class CardsController {
   /**
    * Edit individual record
    */
-  async edit({ params }: HttpContext) {}
+  async edit({ params, view }: HttpContext) {
+    const card = await Card.query().where('id', params.id).firstOrFail()
+
+    return view.render('pages/cards/edit', { card })
+  }
 
   /**
    * Handle form submission for the edit action
    */
-  //async update({ params, request }: HttpContext) {}
+  async update({ params, request, response }: HttpContext) {
+    const cardFromForm = await request.validateUsing(registerCardValidator)
+
+    const card = await Card.query().where('id', params.id).firstOrFail()
+
+    card.merge(cardFromForm)
+    await card.save()
+
+    return response.redirect().toRoute('home')
+  }
 
   /**
    * Delete record
@@ -57,7 +70,7 @@ export default class CardsController {
 
     await card.delete()
 
-    session.flash('success', `La carte a été supprimé avec succès !`)
+    session.flash('success', `La carte a été supprimée avec succès !`)
 
     return response.redirect().toRoute('home')
   }

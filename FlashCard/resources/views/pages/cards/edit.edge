@@ -1,0 +1,20 @@
+@component('./components/layout', { title: 'test' })
+
+  <h1>
+    bonjour
+  </h1>
+
+  <form action="{{ route('cards.update', {id: card.id}) }}" method="POST">
+    {{ csrfField() }}
+
+    <input type="hidden" name="_method" value="PATCH" />
+
+    <label>Question de la carte</label>
+    <input type="text" name="rectoText" value="{{ card.rectoText }}" required />
+
+    <label>Réponse</label>
+    <input type="text" name="versoText" value="{{ card.versoText }}" required />
+
+    <button type="submit">Modifier</button>
+  </form>
+@endcomponent

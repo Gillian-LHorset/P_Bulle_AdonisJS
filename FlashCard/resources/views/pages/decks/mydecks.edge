@@ -5,6 +5,7 @@
   @if(decks.length > 0)
     <ul class="decks_list">
       @each(deck in decks)
+
         <li class="decks_clickable">
           <a class="link_decks" href="{{ route('decks.show', { id: deck.id }) }}">
             <h2 class="decks_title">
@@ -20,9 +21,26 @@
             </p>
           </a>
         </li>
+
         <li>
-          <a href="{{ route('decks.editView', { id: deck.id }) }}">Modifier</a>
+          <a href="{{ route('decks.edit', { id: deck.id }) }}">Modifier</a>
+
+          <button onclick="toggleDeleteConfirmation({{ deck.id }})">
+            supprimer
+          </button>
+          <br />
+          <div id="confimation-div-{{ deck.id }}" class="hidden">
+            <p>
+              Êtes-vous sûrs de vouloir supprimer ce deck ?
+            </p>
+            <form action="{{ route('decks.destroy', { id: deck.id }) }}" method="POST">
+              {{ csrfField() }}
+            <button type="submit">Oui</button>
+            </form>
+            <button onclick="toggleDeleteConfirmation({{ deck.id }})">Non</button>
+          </div>
         </li>
+
       @end
     </ul>
   @else
@@ -32,3 +50,18 @@
   @end
   
 @endcomponent
+<script>
+  document.querySelector("#delete-button").addEventListener("click", toggleDeleteConfirmation);
+
+  let isShow = false;
+
+  function toggleDeleteConfirmation(id) {
+    const div = document.getElementById("confimation-div-" + id);
+    div.classList.toggle("hidden");
+  }
+
+  function cancelDelete() {
+    const div = document.getElementById("confimation-div-" + id);
+    div.classList.add("hidden");
+  }
+</script>

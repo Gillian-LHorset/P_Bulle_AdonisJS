@@ -7,16 +7,22 @@
     {{ deck.description }}
   </p>
   @each(card in cards)
-    <p>
-      {{ card.rectoText }}
-    </p>
-    <p>
-      {{ card.versoText }}
-    </p>
+    <div class="card">
+      <div class="card-inner">
+        <div class="card-front">
+          {{ card.rectoText }}
+        </div>
+        <div class="card-back">
+          {{ card.versoText }}
+        </div>
+      </div>
+    </div>
 
     <button onclick="toggleDeleteConfirmation({{ card.id }})">
       supprimer
     </button>
+    <a href=" {{ route('cards.edit', {id: card.id}) }}">Modifier</a>
+    <br />
     <div id="confimation-div-{{ card.id }}" class="hidden">
       <p>
         Êtes-vous sûrs de vouloir supprimer cette carte ?
@@ -27,6 +33,7 @@
       </form>
       <button onclick="toggleDeleteConfirmation({{ card.id }})">Non</button>
     </div>
+    <br />
   @end
   
   
