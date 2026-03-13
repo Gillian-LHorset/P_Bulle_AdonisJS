@@ -4,7 +4,9 @@
     {{ csrfField() }}
 
     <label>Nome de la catégorie</label>
-    <input type="text" name="name" required />
+    <input type="text" name="name" 
+      value="{{ old('name') || '' }}" 
+       required />
     @inputError('name')
       <p class="text-danger">
         {{ $messages.join(', ') }}

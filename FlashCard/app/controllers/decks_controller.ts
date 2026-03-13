@@ -1,9 +1,8 @@
 import Card from '#models/card'
 import Categorie from '#models/categorie'
 import Deck from '#models/deck'
-import User from '#models/user'
 import { registerDeckValidator } from '#validators/deck'
-import { Redirect, type HttpContext } from '@adonisjs/core/http'
+import {  type HttpContext } from '@adonisjs/core/http'
 import { dd } from '@adonisjs/core/services/dumper'
 
 export default class DecksController {
@@ -28,7 +27,9 @@ export default class DecksController {
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-    return view.render('pages/decks/create')
+    const categories = await Categorie.query()
+    
+    return view.render('pages/decks/create', {categories})
   }
 
   /**
@@ -37,9 +38,10 @@ export default class DecksController {
   async store({ request, auth, response }: HttpContext) {
     const user = auth.user!
 
-    const { title, description } = await request.validateUsing(registerDeckValidator)
-
-    const deck = await Deck.create({ title, description, userId: user.id })
+    // validate the data, send the id of the current user for be sure it's don't create 2 decks whith the same title
+    const { title, description, categorieId  } = await request.validateUsing(registerDeckValidator, {meta: {userId: user.id}})
+    
+    await Deck.create({ title, description, userId: user.id, categorieId })
 
     return response.redirect().toRoute('my-decks')
   }
@@ -66,8 +68,10 @@ export default class DecksController {
   /**
    * Edit individual record
    */
-  async update({ params, request, response }: HttpContext) {
-    const deckFromForm = await request.validateUsing(registerDeckValidator)
+  async update({ params, request, response, auth }: HttpContext) {
+    const user = auth.user!
+
+    const deckFromForm = await request.validateUsing(registerDeckValidator, {meta: {userId: user.id}})
 
     const deck = await Deck.query().where('id', params.id).firstOrFail()
 

@@ -1,18 +1,45 @@
 @component('./components/layout', { title: title })
 
   <h1>
-    hello
+    Ajouter un deck
   </h1>
-  <a href="#" onclick="window.history.back()">Annuler</a>
+
+  <a href="{{ route('my-decks') }}">Annuler</a>
+  
   <form action="{{ route('decks.store') }}" method="POST">
     {{ csrfField() }}
 
     <label>Titre</label>
-    <input type="text" name="title" required />
+    <input type="text" name="title" 
+      value="{{ old('title') || '' }}" 
+       required />
+
+    @inputError('title')
+      <p class="text-danger">
+        {{ $messages.join(', ') }}
+      </p>
+    @end
 
     <label>Description</label>
-    <input type="text" name="description" required />
+    <input type="text" name="description" 
+      value="{{ old('description') || '' }}" 
+       required />
 
+    @inputError('description')
+      <p class="text-danger">
+        {{ $messages.join(', ') }}
+      </p>
+    @end
+
+    <label for="cat">catégorie</label>
+    <select name="categorieId" id="cat" required>
+      @each(categorie in categories)
+        <option value="{{ categorie.id }}">
+          {{ categorie.name }}
+        </option>
+      @end
+    </select>
     <button type="submit">Submit</button>
+    
   </form>
 @endcomponent

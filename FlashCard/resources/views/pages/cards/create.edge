@@ -8,10 +8,26 @@
     {{ csrfField() }}
 
     <label>Question de la carte</label>
-    <input type="text" name="rectoText" required />
+    <input type="text" name="rectoText" 
+      value="{{ old('rectoText') || '' }}" 
+      required />
+
+    @inputError('rectoText')
+      <p class="text-danger">
+        {{ $messages.join(', ') }}
+      </p>
+    @end
 
     <label>Réponse</label>
-    <input type="text" name="versoText" required />
+    <input type="text" name="versoText" 
+      value="{{ old('versoText') || '' }}" 
+      required />
+
+    @inputError('versoText')
+      <p class="text-danger">
+        {{ $messages.join(', ') }}
+      </p>
+    @end
 
     <button type="submit">Submit</button>
   </form>

@@ -1,15 +1,29 @@
 @component('./components/layout', { title: "FlashCard - Edit a deck" })
 
+  <h1>Modifier le deck : {{ deck.title }}</h1>
+
   <form action="{{ route('decks.update', { id: deck.id }) }}" method="POST">
     {{ csrfField() }}
 
     <input type="hidden" name="_method" value="PATCH" />
 
     <label for="titre">titre</label>
-    <input type="text" name="title" value="{{ deck.title }}" id="titre" required />
+    <input type="text" name="title" value="{{ old('title') || deck.title }}" id="titre" required />
+
+    @inputError('title')
+      <p class="text-danger">
+        {{ $messages.join(', ') }}
+      </p>
+    @end
 
     <label for="desc">description</label>
-    <input type="text" name="description" value="{{ deck.description }}" id="desc" required />
+    <input type="text" name="description" value="{{ old('description') || deck.description }}" id="desc" required />
+
+    @inputError('description')
+      <p class="text-danger">
+        {{ $messages.join(', ') }}
+      </p>
+    @end
 
     <label for="cat">catégories</label>
     <select name="categorie_id" id="cat" required>

@@ -1,8 +1,7 @@
 @component('./components/layout', { title: 'test' })
 
-  <h1>
-    bonjour
-  </h1>
+  
+  <h1>Modifier la carte : {{ card.rectoText }}</h1>
 
   <form action="{{ route('cards.update', {id: card.id}) }}" method="POST">
     {{ csrfField() }}
@@ -10,10 +9,26 @@
     <input type="hidden" name="_method" value="PATCH" />
 
     <label>Question de la carte</label>
-    <input type="text" name="rectoText" value="{{ card.rectoText }}" required />
+    <input type="text" name="rectoText" 
+    value="{{ old('rectoText') || card.rectoText }}" 
+    required />
 
+    @inputError('rectoText')
+      <p class="text-danger">
+        {{ $messages.join(', ') }}
+      </p>
+    @end
+    
     <label>Réponse</label>
-    <input type="text" name="versoText" value="{{ card.versoText }}" required />
+    <input type="text" name="versoText" 
+    value="{{ old('versoText') || card.versoText }}" 
+    required />
+
+    @inputError('versoText')
+      <p class="text-danger">
+        {{ $messages.join(', ') }}
+      </p>
+    @end
 
     <button type="submit">Modifier</button>
   </form>
