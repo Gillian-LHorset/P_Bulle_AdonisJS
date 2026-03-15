@@ -1,0 +1,99 @@
+@component('./components/layout', { title: title ?? deck.title })
+
+  <h1>
+    Jouer au deck : {{ deck.title }}
+  </h1>
+
+  <div id="game-container">
+
+    <div id="play-area">
+      <div id="card-display" class="play_card_display">
+        <h2 id="card-text">
+        </h2>
+      </div>
+
+      <div id="actions" class="buttons_gestion">
+        <button id="button-flip">Retourner la carte</button>
+        <button id="button-correct" class="correct_button">Juste</button>
+        <button id="button-false" class="false_button">Faux</button>
+      </div>
+    </div>
+
+    <div id="finish-area">
+      <p>
+        Score : <strong id="score-display">0</strong>/ <span id="total-display">0</span>
+      </p>
+      <a href="/" class="back_home">retour à l'accueil</a>
+    </div>
+
+  </div>
+
+@endcomponent
+<script>
+  //
+  // the gestion of the game is in the js
+  //
+  document.addEventListener("DOMContentLoaded", () => {
+    // transform controller data to usable js variable
+    const cards = {{{ JSON.stringify(cards) }}};
+    let currentIndex = 0;
+    let score = 0;
+    let isFlipped = false;
+    const playArea = document.getElementById("play-area");
+    const finishArea = document.getElementById("finish-area");
+    const cardDisplay = document.getElementById("card-display");
+    const cardText = document.getElementById("card-text");
+    const btnFlip = document.getElementById("button-flip");
+    const btnRight = document.getElementById("button-correct");
+    const btnWrong = document.getElementById("button-false");
+    const scoreDisplay = document.getElementById("score-display");
+    const totalDisplay = document.getElementById("total-display");
+    function showQuestion() {
+      if (currentIndex >= cards.length) {
+        showFinishScreen();
+        return;
+      }
+      isFlipped = false;
+      // import the question to the html
+      cardText.textContent = cards[currentIndex].rectoText;
+      btnFlip.style.display = "block";
+      btnRight.style.display = "none";
+      btnWrong.style.display = "none";
+    }
+    function flipCard() {
+      // disable th ecapacity to turn the card when it's already turn
+      if (isFlipped) return;
+      isFlipped = true;
+      // import the answert to the html
+      cardText.textContent = cards[currentIndex].versoText;
+      btnFlip.style.display = "none";
+      btnRight.style.display = "block";
+      btnWrong.style.display = "block";
+    }
+    // if it's correct, add a point to the player
+    function handleAnswer(isCorrect) {
+      if (isCorrect) score++;
+      currentIndex++;
+      showQuestion();
+    }
+    // end screen
+    function showFinishScreen() {
+      finishArea.style.display = "block";
+      scoreDisplay.textContent = score;
+      totalDisplay.textContent = cards.length;
+    }
+    cardDisplay.addEventListener("click", () => {
+      if (!isFlipped) flipCard();
+    });
+    btnFlip.addEventListener("click", flipCard);
+    btnRight.addEventListener("click", () => handleAnswer(true));
+    btnWrong.addEventListener("click", () => handleAnswer(false));
+    // 6. Lancement du jeu
+    if (cards.length > 0) {
+      showQuestion();
+    } else {
+      cardText.textContent = "Le deck ne contien aucune carte";
+      btnFlip.style.display = "none";
+    }
+  });
+</script>

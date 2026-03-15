@@ -17,21 +17,26 @@ export default class CardsController {
   /**
    * Display form to create a new record
    */
-  async create({ view }: HttpContext) {
-    return view.render('pages/cards/create')
+  async create({ view, params }: HttpContext) {
+    const deckId = params.id
+
+    return view.render('pages/cards/create', { deckId })
   }
 
   /**
    * Handle form submission for the create action
    */
-  async store({ auth, request, response }: HttpContext) {
+  async store({ auth, request, response, params }: HttpContext) {
     const user = auth.user!
+    const currentDeckId = params.id
 
-    const { rectoText, versoText } = await request.validateUsing(registerCardValidator)
+    const { rectoText, versoText } = await request.validateUsing(registerCardValidator, {
+      meta: { deckId: currentDeckId },
+    })
 
-    const card = await Card.create({ rectoText, versoText, deckId: user.id })
+    const card = await Card.create({ rectoText, versoText, deckId: currentDeckId })
 
-    return response.redirect().toRoute('decks.show', { id: user.id })
+    return response.redirect().toRoute('decks.show', { id: currentDeckId })
   }
 
   /**
@@ -52,7 +57,10 @@ export default class CardsController {
    * Handle form submission for the edit action
    */
   async update({ params, request, response }: HttpContext) {
-    const cardFromForm = await request.validateUsing(registerCardValidator)
+    const currentDeckId = params.id
+    const cardFromForm = await request.validateUsing(registerCardValidator, {
+      meta: { deckId: currentDeckId },
+    })
 
     const card = await Card.query().where('id', params.id).firstOrFail()
 

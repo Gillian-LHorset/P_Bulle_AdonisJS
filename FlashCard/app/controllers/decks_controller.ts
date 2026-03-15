@@ -1,8 +1,8 @@
 import Card from '#models/card'
 import Categorie from '#models/categorie'
 import Deck from '#models/deck'
-import { registerDeckValidator } from '#validators/deck'
-import {  type HttpContext } from '@adonisjs/core/http'
+import { registerDeckValidator, modifyDeckValidator } from '#validators/deck'
+import { type HttpContext } from '@adonisjs/core/http'
 import { dd } from '@adonisjs/core/services/dumper'
 
 export default class DecksController {
@@ -28,8 +28,8 @@ export default class DecksController {
    */
   async create({ view }: HttpContext) {
     const categories = await Categorie.query()
-    
-    return view.render('pages/decks/create', {categories})
+
+    return view.render('pages/decks/create', { categories })
   }
 
   /**
@@ -39,8 +39,10 @@ export default class DecksController {
     const user = auth.user!
 
     // validate the data, send the id of the current user for be sure it's don't create 2 decks whith the same title
-    const { title, description, categorieId  } = await request.validateUsing(registerDeckValidator, {meta: {userId: user.id}})
-    
+    const { title, description, categorieId } = await request.validateUsing(registerDeckValidator, {
+      meta: { userId: user.id },
+    })
+
     await Deck.create({ title, description, userId: user.id, categorieId })
 
     return response.redirect().toRoute('my-decks')
@@ -71,7 +73,8 @@ export default class DecksController {
   async update({ params, request, response, auth }: HttpContext) {
     const user = auth.user!
 
-    const deckFromForm = await request.validateUsing(registerDeckValidator, {meta: {userId: user.id}})
+    // didn't check if the new deck title is already present in the db
+    const deckFromForm = await request.validateUsing(modifyDeckValidator)
 
     const deck = await Deck.query().where('id', params.id).firstOrFail()
 
@@ -97,5 +100,15 @@ export default class DecksController {
     session.flash('success', `La carte a été supprimée avec succès !`)
 
     return response.redirect().toRoute('home')
+  }
+
+  // play at the game
+
+  async play({ params, view }: HttpContext) {
+    const deck = await Deck.query().where('id', params.id).firstOrFail()
+
+    const cards = await Card.query().preload('deck').where('deckId', params.id)
+
+    return view.render('pages/decks/play', { deck, cards })
   }
 }

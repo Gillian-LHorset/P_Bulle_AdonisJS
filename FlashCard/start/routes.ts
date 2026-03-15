@@ -16,7 +16,9 @@ import CategoriesController from '#controllers/categories_controller'
 
 router.get('/', [DecksController, 'index']).as('home').use(middleware.guest())
 
+//
 // about decks
+//
 
 // show the list of decks
 router.get('/mydecks', [DecksController, 'showmydecks']).as('my-decks').use(middleware.auth())
@@ -44,12 +46,18 @@ router
   .use(middleware.auth())
   .as('decks.destroy')
 
+// play mod
+
+router.get('decks/play/:id', [DecksController, 'play']).use(middleware.auth()).as('decks.play')
+
+//
 // about card
+//
 
 // add a card
-router.get('/cards/add', [CardsController, 'create']).as('cards.create').use(middleware.auth())
+router.get('/cards/:id/add', [CardsController, 'create']).as('cards.create').use(middleware.auth())
 
-router.post('/cards/add', [CardsController, 'store']).as('cards.store').use(middleware.auth())
+router.post('/cards/:id/add', [CardsController, 'store']).as('cards.store').use(middleware.auth())
 
 // delete a cards
 router
@@ -66,7 +74,9 @@ router
   .as('cards.update')
   .use(middleware.auth())
 
+//
 // about categories
+//
 
 // categories
 router.get('/categorie', [CategoriesController, 'show']).as('categorie.show')
@@ -78,7 +88,9 @@ router.get('/catergorie/create', [CategoriesController, 'create']).as('categorie
 
 router.post('/catergorie/create', [CategoriesController, 'store']).as('categorie.store')
 
+//
 // about auth
+//
 
 router.get('/login', [AuthController, 'login_index']).as('auth.login').use(middleware.guest())
 

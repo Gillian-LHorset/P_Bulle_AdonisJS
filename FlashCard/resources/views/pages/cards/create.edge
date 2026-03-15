@@ -4,31 +4,27 @@
     hello
   </h1>
   <a href="#" onclick="window.history.back()">Annuler</a>
-  <form action="{{ route('cards.store') }}" method="POST">
+  <form action="{{ route('cards.store', [deckId] ) }}" method="POST">
     {{ csrfField() }}
 
     <label>Question de la carte</label>
-    <input type="text" name="rectoText" 
-      value="{{ old('rectoText') || '' }}" 
-      required />
+    <input type="text" name="rectoText" value="{{ old('rectoText') || '' }}" required />
 
     @inputError('rectoText')
       <p class="text-danger">
         {{ $messages.join(', ') }}
       </p>
     @end
-
+    
     <label>Réponse</label>
-    <input type="text" name="versoText" 
-      value="{{ old('versoText') || '' }}" 
-      required />
+    <input type="text" name="versoText" value="{{ old('versoText') || '' }}" required />
 
     @inputError('versoText')
       <p class="text-danger">
         {{ $messages.join(', ') }}
       </p>
     @end
-
+    
     <button type="submit">Submit</button>
   </form>
 @endcomponent

@@ -1,19 +1,23 @@
 @component('./components/layout', { title: title })
   <h1>
-    {{ deck.title }}
+    Titre : {{ deck.title }}
   </h1>
-
-  <p>
-    {{ deck.description }}
-  </p>
+  <div class="exerce_deck">
+    <p>
+      Description : {{ deck.description }}
+    </p>
+    <a href=" {{ route('decks.play', [deck.id]) }}">
+      Exercer le deck
+    </a>
+  </div>
   @each(card in cards)
-    <div class="card">
-      <div class="card-inner">
-        <div class="card-front">
-          {{ card.rectoText }}
+    <div class="cards">
+      <div class="flip_card" data-card>
+        <div class="question_card">
+          Question : {{ card.rectoText }}
         </div>
-        <div class="card-back">
-          {{ card.versoText }}
+        <div class="reponse_card">
+          Réponse : {{ card.versoText }}
         </div>
       </div>
     </div>
@@ -21,7 +25,7 @@
     <button onclick="toggleDeleteConfirmation({{ card.id }})">
       supprimer
     </button>
-    <a href=" {{ route('cards.edit', {id: card.id}) }}">Modifier</a>
+    <a href=" {{ route('cards.edit', {id: card.id, deckId: deck.id}) }}">Modifier</a>
     <br />
     <div id="confimation-div-{{ card.id }}" class="hidden">
       <p>
@@ -38,21 +42,34 @@
   
   
   
-  <a href="{{ route('cards.create') }}">Ajouter une carte</a>
+  <a href="{{ route('cards.create', [deck.id] ) }}">Ajouter une carte</a>
 
-  <script>
-    document.querySelector("#delete-button").addEventListener("click", toggleDeleteConfirmation);
-
-    let isShow = false;
-
-    function toggleDeleteConfirmation(id) {
-      const div = document.getElementById("confimation-div-" + id);
+@endcomponent
+<script>
+  // 1. On supprime la ligne qui cherchait "#delete-button" car elle causait l'erreur.
+  // Fonction pour afficher/masquer la confirmation de suppression
+  function toggleDeleteConfirmation(id) {
+    const div = document.getElementById("confimation-div-" + id);
+    if (div) {
       div.classList.toggle("hidden");
     }
+  }
+  // Cette fonction n'est pas utilisée dans ton HTML actuel, 
+  // mais si tu l'utilises, elle a besoin de l'ID.
 
-    function cancelDelete() {
-      const div = document.getElementById("confimation-div-" + id);
+  function cancelDelete(id) {
+    const div = document.getElementById("confimation-div-" + id);
+    if (div) {
       div.classList.add("hidden");
     }
-  </script>
-@endcomponent
+  }
+  // 2. Gestion du retournement des cartes
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("[data-card]").forEach(card => {
+      card.addEventListener("click", function() {
+        this.classList.toggle("flipped");
+      });
+    });
+  });
+</script>
