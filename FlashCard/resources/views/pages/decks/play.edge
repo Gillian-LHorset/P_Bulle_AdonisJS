@@ -23,7 +23,7 @@
       <p>
         Score : <strong id="score-display">0</strong>/ <span id="total-display">0</span>
       </p>
-      <a href="/" class="back_home">retour à l'accueil</a>
+      <a href="{{ route('home') }}" class="back_home">retour à l'accueil</a>
     </div>
 
   </div>
@@ -88,7 +88,7 @@
     btnFlip.addEventListener("click", flipCard);
     btnRight.addEventListener("click", () => handleAnswer(true));
     btnWrong.addEventListener("click", () => handleAnswer(false));
-    // 6. Lancement du jeu
+    // if the deck has no cards
     if (cards.length > 0) {
       showQuestion();
     } else {
